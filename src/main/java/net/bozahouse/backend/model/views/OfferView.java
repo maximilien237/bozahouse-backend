@@ -40,6 +40,7 @@ public class OfferView {
     private int currentPage;
     private int totalPages;
     private int pageSize;
-
+    private int sizeActivated;
+    private int sizeDisabled;
 
 }

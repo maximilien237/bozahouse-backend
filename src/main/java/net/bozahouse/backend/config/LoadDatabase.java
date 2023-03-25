@@ -1,105 +1,175 @@
 package net.bozahouse.backend.config;
 
 
+import net.bozahouse.backend.mappers.FormToEntityConverter;
+import net.bozahouse.backend.model.entities.*;
+import net.bozahouse.backend.model.forms.*;
+import net.bozahouse.backend.repositories.AppUserRepo;
+import net.bozahouse.backend.security.services.UserDetailsServiceImpl;
+import net.bozahouse.backend.services.NewsletterService;
+import net.bozahouse.backend.services.OfferService;
+import net.bozahouse.backend.services.TalentService;
+import net.bozahouse.backend.services.TestimonyService;
+import net.bozahouse.backend.utils.DateUtils;
+import net.bozahouse.backend.utils.RandomUtils;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.text.ParseException;
+import java.util.Date;
+import java.util.stream.Stream;
+
 //@Configuration
 public class LoadDatabase {
 
 
-       // @Bean
-/*        CommandLineRunner start(AppUserRepo userRepo,AppUserService userService,AppRoleService roleService,OfferService offerService, PasswordEncoder encoder){
+        // @Bean
+/*         CommandLineRunner start(AppUserRepo appUserRepo, OfferService offerService,
+                                 TalentService talentService, UserDetailsServiceImpl userDetailsService,
+                                 NewsletterService newsletterService, TestimonyService testimonyService,
+                                 PasswordEncoder encoder)
+         {
                 return args -> {
 
-                        AppUser appUser = new AppUser();
+
+                    AppUserForm form = new AppUserForm();
+                    form.setUsername("admin");
+                    form.setLastname("ADMIN");
+                    form.setAccount("employer");
+                    form.setBirthday(DateUtils.convertDateToString(new Date()));
+                    form.setHowKnowUs("other");
+                    form.setFirstname("Admin");
+                    form.setPassword(encoder.encode("admin"));
+                    form.setConfirmPassword(encoder.encode("admin"));
+                    form.setReferralCode("none");
+                    form.setEmail("admin@gmail.com");
+                    form.setAcceptTerms(true);
+                    form.setSex("Homme");
+                    AppUser user = FormToEntityConverter.convertFormToAppUser(form);
+                    user.setId(RandomUtils.unique());
+                    user.setActivated(true);
+                    user.setCreatedAt(new Date());
+                    user.setFirstConnexion(false);
+
+                    userDetailsService.saveAdmin(user);
+
+
+
+                    Stream.of("marc", "vidal", "user","luc", "bob", "max","cooper", "denver", "maxi").forEach(name -> {
+                        AppUserForm form1 = new AppUserForm();
+                        form1.setUsername(name);
+                        form1.setLastname("name");
+                        form1.setAccount("talent");
+                        form1.setBirthday(DateUtils.convertDateToString(new Date()));
+                        form1.setHowKnowUs("facebook");
+                        form1.setFirstname("surname");
+                        form1.setPassword(encoder.encode("1234"));
+                        form1.setConfirmPassword(encoder.encode("1234"));
+                        form1.setReferralCode("none");
+                        form1.setEmail(name + "@gmail.com");
+                        form1.setAcceptTerms(true);
+                        form1.setSex("Homme");
+                        AppUser appUser = FormToEntityConverter.convertFormToAppUser(form1);
+                        appUser.setActivated(true);
+                        appUser.setCreatedAt(new Date());
+                        appUser.setFirstConnexion(false);
+
+                        userDetailsService.saveAppUser(appUser);
+
+
+                    });
+
+
+
+                    appUserRepo.findAll().forEach(appUser -> {
+
+
+                        NewsletterForm newsletterForm = new NewsletterForm();
+                        newsletterForm.setSubject("Bozahouse news");
+                        newsletterForm.setEnglishContent("english");
+                        newsletterForm.setFrenchContent("french");
+                        Newsletter newsletter = FormToEntityConverter.convertFormToNews(newsletterForm);
+                        newsletter.setCreatedAt(new Date());
+                        newsletter.setUser(appUser);
+                        //save
+                        newsletterService.createNews(newsletter);
+
+                        TestimonyForm testimonyForm = new TestimonyForm();
+                        testimonyForm.setMessage("great");
+                        Testimony testimony = FormToEntityConverter.convertFormToTestimony(testimonyForm);
+                        testimony.setAuthor(appUser);
+                        testimony.setCreatedAt(new Date());
+                        //save
+                        testimonyService.createTestimony(testimony);
+
+
+
+
+                        OfferForm form2 = new OfferForm();
+                        form2.setFcb("https://maven.apache.org/xsd/maven-4.0.0.xsd");
+                        form2.setLinkedin("https://maven.apache.org/xsd/maven-4.0.0.xsd");
+                        form2.setContract("CDI");
+                        form2.setDomain("Auto-école");
+                        form2.setTitle("Chauffeur");
+                        form2.setExperience("+20 ans");
+                        form2.setMission("bla bla bla");
+                        form2.setWeb("https://maven.apache.org/xsd/maven-4.0.0.xsd");
+                        form2.setWorkMode("A distance");
+                        form2.setNeedPeople(1);
+                        form2.setProfile("bla bla bla");
+                        form2.setSalary("150000");
+                        form2.setSalaryChoice("bla bla bla");
+                        form2.setSkills("bla bla bla");
+                        form2.setEmail("apache@gmail.com");
+                        form2.setTel("67984523");
+                        form2.setType("enterprise");
+                        form2.setDomain("Elevage");
+                        form2.setWhatsAppNumber("67984523");
+                        form2.setName("Apache");
+                        form2.setAddress("Ekounou, Yaoundé, Cameroun");
+                        Offer offer = FormToEntityConverter.convertFormToOffer(form2);
+
+                        offer.setEndOffer(DateUtils.currentDatePlus1Month());
+                        offer.setUser(appUser);
+                        try {
+                            offerService.createOfferView(offer);
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
+                        TalentForm form3 = new TalentForm();
+                        form3.setEmail("talent@gmail.com");
+                        form3.setTel("656453412");
+                        form3.setType("professional");
+                        form3.setGithub("https://maven.apache.org/xsd/maven-4.0.0.xsd");
+                        form3.setContract("CDD");
+                        form3.setExperience("Aucune");
+                        form3.setAddress("Baf, Bafoussam, Cameroun");
+                        form3.setLinkedin("https://maven.apache.org/xsd/maven-4.0.0.xsd");
+                        form3.setSalaryChoice("");
+                        form3.setSkills("bla bla bla");
+                        form3.setWorkMode("Sur Site");
+                        form3.setLevel("BAC+2");
+                        form3.setWhatsAppNumber("656453412");
+                        form3.setDomain("informatique");
+                        form3.setTitle("dev web");
+                        form3.setSalary("70000");
+
+                        Talent talent = FormToEntityConverter.convertFormToTalent(form3);
+                        talent.setUser(appUser);
+                        talent.setPublishedAt(new Date());
+
+                        talentService.createTalentView(talent);
+                });
+
                 };
+
+
+
         }*/
+    }
 
-/*
-                AppUserForm form = new AppUserForm();
-                form.setUsername("maximilien");
-                form.setLastname("kengne");
-                form.setAccount("employer");
-                form.setBirthday(DateUtils.convertSimpleDateFormat("17-12-1992 01:10:20"));
-                form.setHowKnowUs("conceptor");
-                form.setFirstname("Maximilien");
-                form.setPassword("1234");
-                form.setConfirmPassword("1234");
-                form.setReferralCode("none");
-                form.setEmail("max@gmail.com");
-                AppUser appUser = FormToEntityConverter.convertFormToAppUser(form);
-                appUser.setId(RandomUtils.unique());
-                appUser.setActivated(true);
-                appUser.setCreatedAt(new Date());
-
-
-                    appUserRepo.save(appUser);
-                    appUserService.addRoleToUser("maximilien",ERole.ROLE_ROOT);
-                    appUserService.addRoleToUser("maximilien",ERole.ROLE_ADMIN);
-                    appUserService.addRoleToUser("maximilien",ERole.ROLE_EDITOR);
-                    appUserService.addRoleToUser("maximilien",ERole.ROLE_EMPLOYER);
-                    appUserService.addRoleToUser("maximilien",ERole.ROLE_FIRM);
-                    appUserService.addRoleToUser("maximilien",ERole.ROLE_TALENT);
-
-*/
-
-
-
-/*            Stream.of("marc", "vidal", "justin").forEach(name -> {
-                AppUserForm form = new AppUserForm();
-                form.setUsername(name);
-                form.setLastname("name");
-                form.setAccount("employer");
-                form.setBirthday(DateUtils.convertSimpleDateFormat("17-12-1999 01:10:20"));
-                form.setHowKnowUs("facebook");
-                form.setFirstname("surname");
-                form.setPassword("1234");
-                form.setConfirmPassword("1234");
-                form.setReferralCode("cake");
-                form.setEmail(name + "@gmail.com");
-                AppUser appUser = FormToEntityConverter.convertFormToAppUser(form);
-                try {
-                    ThreadUtils.sleep5();
-                    appUserService.createAppUser(appUser);
-
-
-                } catch (RoleNotFoundException | AppUserNotFoundException | PaymentNotFoundException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            appUserRepo.findAll().forEach(appUser -> {
-                OfferForm form = new OfferForm();
-                form.setAddress("ekounou");
-                form.setCity(city);
-                form.setDateExpiration(DateUtils.convertSimpleDateFormat("13-10-2023 01:10:20"));
-                form.setDomain("Auto-école");
-                form.setId(RandomUtils.unique());
-                form.setTitle("Chauffeur");
-                form.setCountry(country);
-                form.setDomain("Elevage");
-                form.setWhatsAppNumber("67984523");
-                form.setName("job home");
-                Offer offer = FormToEntityConverter.convertFormToOffer(form);
-                offer.setUser(appUser);
-
-
-                Talent talent = new Talent();
-                talent.setCity(city1);
-                talent.setSalary("23000.0");
-                talent.setPublishedAt(new Date());
-                talent.setDomain("informatique");
-                talent.setTitle("dev web");
-                talent.setSex("M.");
-                talent.setUser(appUser);
-
-
-                offerService.createOfferView(offer);
-                offerService.createOfferView(offer);
-                talentService.createTalentView(talent);
-
-
-            });*/
-        };
-/*    }
-}*/
 

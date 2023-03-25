@@ -48,7 +48,11 @@ public class OfferServiceImpl implements OfferService{
             return listOfferView(page, size);
         }
 
-        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers,page,size,offerList.size());
+        int sizeActivated = offerRepo.listOfferNotPageable().size();
+        int sizeDisabled = offerRepo.listOfferValidFalseNotPageable().size();
+
+
+        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers,page,size,offerList.size(),sizeActivated,sizeDisabled);
         System.out.println("je passe bien ici");
         return offerViews;
     }
@@ -66,7 +70,10 @@ public class OfferServiceImpl implements OfferService{
             return listOfferNotValidView(page, size);
         }
 
-        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers,page,size,offerList.size());
+        int sizeActivated = offerRepo.listOfferNotPageable().size();
+        int sizeDisabled = offerRepo.listOfferValidFalseNotPageable().size();
+
+        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers,page,size,offerList.size(), sizeActivated, sizeDisabled);
         System.out.println("je passe bien ici");
         return offerViews;
     }
@@ -78,7 +85,11 @@ public class OfferServiceImpl implements OfferService{
         AppUser appUser = userRepo.findById(appUserId).orElseThrow(()-> new AppUserNotFoundException("user not found"));
         List<Offer> offers = offerRepo.listOfferByUser(appUser,PageRequest.of(page, size));
         List<Offer> offerList = offerRepo.listOfferByUserNotPageable(appUser);
-        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers, page, size, offerList.size());
+
+        int sizeActivated = offerRepo.listOfferNotPageable().size();
+        int sizeDisabled = offerRepo.listOfferValidFalseNotPageable().size();
+
+        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers, page, size, offerList.size(), sizeActivated, sizeDisabled);
 
         return offerViews;
     }
@@ -178,8 +189,11 @@ public class OfferServiceImpl implements OfferService{
     public List<OfferView> listOfferView(int page, int size) {
         log.info("list offer view");
         List<Offer> offers = offerRepo.listOffer(PageRequest.of(page, size));
-        List<Offer> offerList = offerRepo.listOfferNotPageable();
-        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers, page, size, offerList.size());
+
+        int sizeActivated = offerRepo.listOfferNotPageable().size();
+        int sizeDisabled = offerRepo.listOfferValidFalseNotPageable().size();
+
+        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers, page, size, sizeActivated, sizeActivated, sizeDisabled);
 
         return offerViews;
     }
@@ -188,8 +202,11 @@ public class OfferServiceImpl implements OfferService{
     public List<OfferView> listOfferNotValidView(int page, int size) {
         log.info("list offer not valid view");
         List<Offer> offers = offerRepo.listOfferValidFalse(PageRequest.of(page, size));
-        List<Offer> offerList = offerRepo.listOfferValidFalseNotPageable();
-        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers, page, size, offerList.size());
+
+        int sizeActivated = offerRepo.listOfferNotPageable().size();
+        int sizeDisabled = offerRepo.listOfferValidFalseNotPageable().size();
+
+        List<OfferView> offerViews = ListEntityToListViewConverter.paginateOfferView(offers, page, size, sizeDisabled, sizeActivated, sizeDisabled);
 
         return offerViews;
     }

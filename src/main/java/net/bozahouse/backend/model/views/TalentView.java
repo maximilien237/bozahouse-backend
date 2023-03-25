@@ -17,8 +17,8 @@ public class TalentView {
     private String salaryChoice;
     private String tel;
     private String whatsAppNumber;
-    private String countryName;
-    private String cityName;
+    //private String countryName;
+    //private String cityName;
     private String level;
     private String countryCode;
     private String address;
@@ -37,5 +37,7 @@ public class TalentView {
     private int currentPage;
     private int totalPages;
     private int pageSize;
+    private int sizeActivated;
+    private int sizeDisabled;
 
 }

@@ -11,6 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AppUserRepo extends JpaRepository<AppUser, String> {
+    @Query("" + "select case when count(a) > 0 then " +
+    "true else false end " +
+    "from AppUser a " +
+    "where a.email=?1")
+    Boolean selectExistsEmail(String email);
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
     Boolean existsByPromoCode(String code);

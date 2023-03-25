@@ -51,9 +51,6 @@ public class EmailSenderImpl implements EmailSender {
     @Value("${email_admin}")
     private String emailAdmin;
 
-    @Value("${email_support}")
-    private String emailSupport;
-
     @Value("${url_backend}")
     private String urlBackend;
 
@@ -265,7 +262,7 @@ public class EmailSenderImpl implements EmailSender {
             List<AppUserView> appUserViews = appUsers.stream().map(appUser -> EntityToViewConverter.convertEntityToAppUserView(appUser)).collect(Collectors.toList());
 
 
-            String url = urlBackend + "/api/auth/v1/signIn/";
+            String url = "https://www.bozahouse.com/";
                 //context template message
 
                 for (AppUserView appUserView : appUserViews){
@@ -308,7 +305,7 @@ public class EmailSenderImpl implements EmailSender {
             List<AppUserView> appUserViews = appUsers.stream().map(appUser -> EntityToViewConverter.convertEntityToAppUserView(appUser)).collect(Collectors.toList());
 
 
-            String url = urlBackend + "/api/auth/v1/signIn/";
+            String url = "https://www.bozahouse.com/";
             //context template message
 
             for (AppUserView appUserView : appUserViews){

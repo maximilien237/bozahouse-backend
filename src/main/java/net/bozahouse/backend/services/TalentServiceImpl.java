@@ -50,7 +50,10 @@ public class TalentServiceImpl implements TalentService{
 
         log.info(" after " + title +" "+contract +" "+workMode +" "+address +" "+experience +" "+type +" "+domain +" "+page +" "+size);
 
-        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents,page,size,talentList.size());
+        int sizeActivated = talentRepo.listTalentNotPageable().size();
+        int sizeDisabled = talentRepo.listTalentValidFalseNotPageable().size();
+
+        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents,page,size,sizeActivated, sizeActivated, sizeDisabled);
         return talentViews;
     }
 
@@ -70,7 +73,10 @@ public class TalentServiceImpl implements TalentService{
 
         log.info(" after " + title +" "+contract +" "+workMode +" "+address +" "+experience +" "+type +" "+domain +" "+page +" "+size);
 
-        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents,page,size,talentList.size());
+        int sizeActivated = talentRepo.listTalentNotPageable().size();
+        int sizeDisabled = talentRepo.listTalentValidFalseNotPageable().size();
+
+        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents,page,size,sizeDisabled, sizeActivated, sizeDisabled);
         return talentViews;
     }
 
@@ -80,7 +86,11 @@ public class TalentServiceImpl implements TalentService{
         AppUser appUser = userRepo.findById(appUserId).orElseThrow(()-> new AppUserNotFoundException("user not found"));
         List<Talent> talents = talentRepo.listTalentByUser(appUser, PageRequest.of(page, size));
         List<Talent> talentList = talentRepo.listTalentByUserNotPageable(appUser);
-        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents, page, size, talentList.size());
+
+        int sizeActivated = talentRepo.listTalentNotPageable().size();
+        int sizeDisabled = talentRepo.listTalentValidFalseNotPageable().size();
+
+        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents, page, size, talentList.size(),sizeActivated, sizeDisabled);
         return talentViews;
     }
 
@@ -156,8 +166,12 @@ public class TalentServiceImpl implements TalentService{
     public List<TalentView> listTalentView(int page, int size) {
         log.info("list talent view");
         List<Talent> talents = talentRepo.listTalent(PageRequest.of(page, size));
-        List<Talent> talentList = talentRepo.listTalentNotPageable();
-        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents, page, size, talentList.size());
+        //List<Talent> talentList = talentRepo.listTalentNotPageable();
+
+        int sizeActivated = talentRepo.listTalentNotPageable().size();
+        int sizeDisabled = talentRepo.listTalentValidFalseNotPageable().size();
+
+        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents, page, size, sizeActivated, sizeActivated, sizeDisabled);
 
         return talentViews;
     }
@@ -166,8 +180,12 @@ public class TalentServiceImpl implements TalentService{
     public List<TalentView> listTalentNotValidView(int page, int size) {
         log.info("list talent not valid view");
         List<Talent> talents = talentRepo.listTalentValidFalse(PageRequest.of(page, size));
-        List<Talent> talentList = talentRepo.listTalentValidFalseNotPageable();
-        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents, page, size, talentList.size());
+        //List<Talent> talentList = talentRepo.listTalentValidFalseNotPageable();
+
+        int sizeActivated = talentRepo.listTalentNotPageable().size();
+        int sizeDisabled = talentRepo.listTalentValidFalseNotPageable().size();
+
+        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents, page, size, sizeDisabled, sizeActivated, sizeDisabled);
 
         return talentViews;
     }
@@ -177,7 +195,11 @@ public class TalentServiceImpl implements TalentService{
         log.info("list talent view");
         List<Talent> talents = talentRepo.listTalentByType(title, PageRequest.of(page, size));
         List<Talent> talentList = talentRepo.listTalentByTitleNotPageable(title);
-        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents, page, size, talentList.size());
+
+        int sizeActivated = talentRepo.listTalentNotPageable().size();
+        int sizeDisabled = talentRepo.listTalentValidFalseNotPageable().size();
+
+        List<TalentView> talentViews = ListEntityToListViewConverter.paginateTalentView(talents, page, size, talentList.size(), sizeActivated, sizeDisabled);
 
         return talentViews;
     }

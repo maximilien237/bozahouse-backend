@@ -34,6 +34,8 @@ public class AppUserView {
     private int currentPage;
     private int totalPages;
     private int pageSize;
+    private int sizeActivated;
+    private int sizeDisabled;
     private Set<AppRole> roles;
 
 

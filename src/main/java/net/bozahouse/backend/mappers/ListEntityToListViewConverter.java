@@ -8,12 +8,15 @@ import java.util.stream.Collectors;
 
 public class ListEntityToListViewConverter {
 
-    public static List<AppUserView> paginateAppUserViewList(List<AppUser> appUsers, int page, int size, int realSize) {
+    public static List<AppUserView> paginateAppUserViewList(List<AppUser> appUsers, int page, int size,
+                                                            int realSize, int sizeActivated, int sizeDisabled ) {
         List<AppUserView> appUserViews = appUsers
                 .stream().map(appUser -> EntityToViewConverter.convertEntityToAppUserView(appUser)).collect(Collectors.toList());
         AppUserView view = appUserViews.get(0);
         view.setCurrentPage(page);
         view.setPageSize(size);
+        view.setSizeDisabled(sizeDisabled);
+        view.setSizeActivated(sizeActivated);
 
         if (realSize % 5 == 0){
             view.setTotalPages(realSize/5);
@@ -24,11 +27,14 @@ public class ListEntityToListViewConverter {
         return appUserViews;
     }
 
-    public static List<OfferView> paginateOfferView(List<Offer> offers, int page, int size, int realSize) {
+    public static List<OfferView> paginateOfferView(List<Offer> offers, int page, int size, int realSize
+            , int sizeActivated, int sizeDisabled ) {
         List<OfferView> offerViews = offers.stream().map(offer -> EntityToViewConverter.convertEntityToOfferView(offer)).collect(Collectors.toList());
         OfferView view = offerViews.get(0);
         view.setCurrentPage(page);
         view.setPageSize(size);
+        view.setSizeActivated(sizeActivated);
+        view.setSizeDisabled(sizeDisabled);
 
         if (realSize % 5 == 0){
             view.setTotalPages(realSize/5);
@@ -39,11 +45,14 @@ public class ListEntityToListViewConverter {
         return offerViews;
     }
 
-    public static List<TalentView> paginateTalentView(List<Talent> talents, int page, int size, int realSize) {
+    public static List<TalentView> paginateTalentView(List<Talent> talents, int page, int size, int realSize,
+                                                      int sizeActivated, int sizeDisabled ) {
         List<TalentView> talentViews = talents.stream().map(talent -> EntityToViewConverter.convertEntityToTalentView(talent)).collect(Collectors.toList());
         TalentView view = talentViews.get(0);
         view.setCurrentPage(page);
         view.setPageSize(size);
+        view.setSizeActivated(sizeActivated);
+        view.setSizeDisabled(sizeDisabled);
 
         if (realSize % 5 == 0){
             view.setTotalPages(realSize/5);

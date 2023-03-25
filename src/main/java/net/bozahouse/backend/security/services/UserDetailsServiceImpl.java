@@ -51,14 +51,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   public void saveAppUser(AppUser appUser) {
 /*    AppRole role = new AppRole();
     role.setName("USER");
-    AppRole role1 = new AppRole();
-    role1.setName("EDITOR");
-    AppRole role2 = new AppRole();
-    role2.setName("ADMIN");
-
     roleRepo.save(role);
-    roleRepo.save(role1);
-    roleRepo.save(role2);*/
+  */
 
 
     appUser.setId(RandomUtils.id());
@@ -69,8 +63,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     userRepo.save(appUser);
     try {
       appUserService.addRoleToUser(appUser.getUsername(), ControllerVariables.USER_ROLE_NAME);
-/*      appUserService.addRoleToUser(appUser.getUsername(), ControllerVariables.EDITOR_ROLE_NAME);
-      appUserService.addRoleToUser(appUser.getUsername(), ControllerVariables.ADMIN_ROLE_NAME);*/
+
     }catch (AppUserNotFoundException a){
       log.error("user not found" + a.getMessage());
     }catch (RoleNotFoundException r){

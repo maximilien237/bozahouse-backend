@@ -11,7 +11,7 @@ public class RandomUtils {
 
     public static String id(){
         UUID uuid = UUID.randomUUID();
-        return uuid.toString().substring(1,6) + generate2Int();
+        return uuid.toString();
     }
 
     public static int generate5Int(){

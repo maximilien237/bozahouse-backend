@@ -214,7 +214,10 @@ public class AppUserServiceImpl implements AppUserService{
 
         List<AppUser> appUsers = userRepo.listAppUserNotPageable();
 
-        List<AppUserView> appUserViews = ListEntityToListViewConverter.paginateAppUserViewList(appUserPage,page,size, appUsers.size());
+        int sizeActivated = userRepo.listAppUserNotPageable().size();
+        int sizeDisabled = userRepo.listAppUserByActivatedFalseNotPageable().size();
+
+        List<AppUserView> appUserViews = ListEntityToListViewConverter.paginateAppUserViewList(appUserPage,page,size, appUsers.size(), sizeActivated, sizeDisabled);
 
     return appUserViews;
 
@@ -282,7 +285,11 @@ public class AppUserServiceImpl implements AppUserService{
         List<AppUser> appUsers = userRepo.findAllByUsername(key,PageRequest.of(page, size));
 
         List<AppUser> appUserList = userRepo.findAllByUsernameOrderByCreatedAtDesc(key);
-        List<AppUserView> views = ListEntityToListViewConverter.paginateAppUserViewList(appUsers,page,size,appUserList.size());
+
+         int sizeActivated = userRepo.listAppUserNotPageable().size();
+         int sizeDisabled = userRepo.listAppUserByActivatedFalseNotPageable().size();
+
+        List<AppUserView> views = ListEntityToListViewConverter.paginateAppUserViewList(appUsers,page,size,appUserList.size(),sizeActivated, sizeDisabled);
 
         return views;
     }
@@ -294,7 +301,11 @@ public class AppUserServiceImpl implements AppUserService{
         List<AppUser> appUsers = userRepo.listAppUserDisabledByUsername(key,PageRequest.of(page, size));
 
         List<AppUser> appUserList = userRepo.listAppUserDisabledByUsernameNotPageable(key);
-        List<AppUserView> views = ListEntityToListViewConverter.paginateAppUserViewList(appUsers,page,size,appUserList.size());
+
+        int sizeActivated = userRepo.listAppUserNotPageable().size();
+        int sizeDisabled = userRepo.listAppUserByActivatedFalseNotPageable().size();
+
+        List<AppUserView> views = ListEntityToListViewConverter.paginateAppUserViewList(appUsers,page,size,appUserList.size(), sizeActivated, sizeDisabled);
 
         return views;
     }

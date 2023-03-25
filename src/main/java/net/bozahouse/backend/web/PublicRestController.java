@@ -82,7 +82,7 @@ public class PublicRestController {
                     break;
                 }
             }
-            System.out.println(isUser);
+            
             if (isUser){
                 appUser.setFirstConnexion(true);
                 userDetailsService.currentSaveAppUser(appUser);
@@ -193,12 +193,12 @@ public class PublicRestController {
     @GetMapping("checkEmail/{email}")
     public String checkEmail(@PathVariable String email) throws AppUserNotFoundException {
         AppUser appUser = appUserService.getAppUserByEmail(email);
-        if (appUser != null){
+        if(appUser != null && appUser.getCountConnexion() == 0){
             appUser.setActivated(true);
             userDetailsService.currentSaveAppUser(appUser);
             return "Compte activé avec succès";
         } else {
-            throw new AppUserNotFoundException("compte inexistant avec cet email");
+            throw new AppUserNotFoundException("compte désactivé ou inexistant avec cet email !");
         }
     }
 }
