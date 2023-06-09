@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/bozahouse
+    url: jdbc:mysql://localhost:3306/host
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: Bozahouse@@2003
+    password: pwd
 
   jpa:
     hibernate:
@@ -17,10 +17,10 @@ spring:
 
 
   mail:
-    host: smtp.bozahouse.com
+    host: smtp.host.com
     port: 587
-    username: support@bozahouse.com
-    password: Lwspanel@@2003
+    username: name@host.com
+    password: pwd
     protocol: smtp
     properties:
       mail:
@@ -38,17 +38,17 @@ spring-doc:
   api-docs:
     path: /api-docs
   
-url_backend: https://api.bozahouse.com
+url_backend: https://api.host.com
 
   
   # App Properties
-bozahouse:
+host:
   app:
-    jwtSecret: bozahouseSecretKey
+    jwtSecret: hostSecretKey
     jwtExpirationMs: 86400000
 
 
-email_admin: support@bozahouse.com
+email_admin: name@host.com
 
 
 
