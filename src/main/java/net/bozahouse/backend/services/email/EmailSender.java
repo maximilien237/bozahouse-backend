@@ -1,39 +1,23 @@
 package net.bozahouse.backend.services.email;
 
-import net.bozahouse.backend.model.entities.AppUser;
-import net.bozahouse.backend.model.entities.Newsletter;
-import net.bozahouse.backend.model.entities.Subscription;
-import net.bozahouse.backend.model.entities.Testimony;
-import net.bozahouse.backend.model.views.AppUserView;
-import net.bozahouse.backend.model.views.OfferView;
-import net.bozahouse.backend.model.views.TalentView;
+
+import net.bozahouse.backend.dtos.NewsletterDTO;
+import net.bozahouse.backend.dtos.OfferDTO;
+import net.bozahouse.backend.dtos.TalentDTO;
+import net.bozahouse.backend.dtos.TestimonyDTO;
+import net.bozahouse.backend.model.entities.*;
 
 public interface EmailSender {
-    void notifyAppUserAboutSubscription(Subscription subscription);
 
-    void notifyRootAboutSubscription(Subscription subscription);
-
-    void jobNotification(OfferView offerView);
-
-    void talentNotification(TalentView talentView);
-
-    void newsletters(Newsletter newsletter);
+    void newsletters(NewsletterDTO newsletterDTO);
 
     void newslettersPlan();
 
-    void validateAccount(AppUserView appUserView);
+    void validateAccount(AppUser appUser);
 
-    void resetPassword(AppUser appUser);
+    void jobNotification(OfferDTO offerDTO);
 
-    void testimonies(Testimony testimony);
+    void talentNotification(TalentDTO talentDTO);
 
-
-
-    // void dailyGift();
-
-    //void sendEmailRegister(AppUserView appUserView);
-
-   //void resetPassword(AppUserView appUserView);
-
-   //void firmNotification();
+    void testimonies(TestimonyDTO testimonyDTO);
 }

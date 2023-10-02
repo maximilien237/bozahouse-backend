@@ -1,11 +1,12 @@
 package net.bozahouse.backend.model.entities;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+
 import java.io.Serializable;
 
 @Entity
@@ -13,19 +14,13 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "roles", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "name")
-})
+@Table(name = "roles")
 public class AppRole implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     @Column(length = 20)
     private String name;
-
-    private int currentPage;
-    private int totalPages;
-    private int pageSize;
 
     public AppRole(String name) {
         this.name = name;

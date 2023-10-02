@@ -1,26 +1,6 @@
 package net.bozahouse.backend.config;
 
 
-import net.bozahouse.backend.mappers.FormToEntityConverter;
-import net.bozahouse.backend.model.entities.*;
-import net.bozahouse.backend.model.forms.*;
-import net.bozahouse.backend.repositories.AppUserRepo;
-import net.bozahouse.backend.security.services.UserDetailsServiceImpl;
-import net.bozahouse.backend.services.NewsletterService;
-import net.bozahouse.backend.services.OfferService;
-import net.bozahouse.backend.services.TalentService;
-import net.bozahouse.backend.services.TestimonyService;
-import net.bozahouse.backend.utils.DateUtils;
-import net.bozahouse.backend.utils.RandomUtils;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.text.ParseException;
-import java.util.Date;
-import java.util.stream.Stream;
-
 //@Configuration
 public class LoadDatabase {
 

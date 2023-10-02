@@ -1,48 +1,33 @@
 package net.bozahouse.backend.services;
 
 
-import net.bozahouse.backend.exception.entitie.AppUserNotFoundException;
-import net.bozahouse.backend.exception.entitie.TalentNotFoundException;
+import net.bozahouse.backend.dtos.PageDTO;
+import net.bozahouse.backend.dtos.TalentDTO;
 import net.bozahouse.backend.model.entities.Talent;
-import net.bozahouse.backend.model.forms.TalentForm;
-import net.bozahouse.backend.model.views.TalentView;
 
+import java.util.Date;
 import java.util.List;
 
 public interface TalentService {
 
 
-    List<TalentView> filterTalentView(String title, String contract, String workMode, String address, String experience, String type, String domain, int page, int size);
+    PageDTO<TalentDTO> filterTalent(String title, String contract, String workMode, String address, String experience, String type, String domain, Date startDate, Date endDate, int page, int size);
 
-    List<TalentView> filterTalentNotValidView(String title, String contract, String workMode, String address, String experience, String type, String domain, int page, int size);
+    PageDTO<TalentDTO>  filterTalentNotValid(String title, String contract, String workMode, String address, String experience, String type, String domain, Date startDate, Date endDate, int page, int size);
 
-    List<TalentView> listTalentByAppUserView(String appUserId, int page, int size) throws AppUserNotFoundException;
+    PageDTO<TalentDTO> listTalentByAppUser(Long appUserId, int page, int size);
 
-    Talent getTalent(String talentId) throws TalentNotFoundException;
+    Talent getTalent(Long talentId);
 
-    Talent createTalent(Talent talent);
+    TalentDTO createTalent(TalentDTO talentDTO, Long userId);
 
-    Talent updateTalent(TalentForm form) throws TalentNotFoundException;
+    TalentDTO updateTalent(TalentDTO talentDTO);
 
-    TalentView getTalentView(String talentId) throws TalentNotFoundException;
+    TalentDTO getTalentDTO(Long talentId);
 
-    TalentView createTalentView(Talent talent);
+    List<TalentDTO> lastThreeTalent();
 
-    TalentView updateTalentView(TalentForm form) throws TalentNotFoundException;
+    void deleteTalent(Long talentId);
 
-    List<TalentView> listTalentView(int page, int size);
-
-    List<TalentView> listByTalentsTitleView(String title, int page, int size);
-
-    List<TalentView> listFormalTalentView(int page, int size);
-
-    List<TalentView> listFreeTalentView(int page, int size);
-
-    List<TalentView> lastThreeTalentView();
-
-    void deleteTalent(String talentId) throws TalentNotFoundException;
-
-    void disableTalent(String talentId) throws TalentNotFoundException;
-
-    void enableTalent(String talentId) throws TalentNotFoundException;
+    void enableOrDisableTalent(Long talentId);
 }

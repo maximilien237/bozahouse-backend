@@ -2,14 +2,16 @@ package net.bozahouse.backend.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bozahouse.backend.exception.entitie.RoleNotFoundException;
+import net.bozahouse.backend.dtos.AppRoleDTO;
+import net.bozahouse.backend.dtos.PageDTO;
+import net.bozahouse.backend.exception.EntityNotFoundException;
 import net.bozahouse.backend.model.entities.AppRole;
 import net.bozahouse.backend.repositories.AppRoleRepo;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,60 +23,66 @@ public class AppRoleServiceImpl implements AppRoleService{
 
 
     @Override
-    public void createRole(AppRole role) {
+    public AppRoleDTO createOrUpdateAppRole(AppRole role) {
         log.info("creating role...");
-        roleRepo.save(role);
+        AppRole appRole = roleRepo.save(role);
+        return AppRoleDTO.mapToDTO(appRole);
     }
 
     @Override
-    public AppRole getRole(Integer roleId) throws RoleNotFoundException {
+    public AppRole getRole(Long roleId)  {
         log.info("getting role by id :: " +roleId +"...");
-        Optional<AppRole> optionalRole = roleRepo.findById(roleId);
-        AppRole role;
-        if (optionalRole.isPresent()){
-            role = optionalRole.get();
+        Optional<AppRole> optionalAppRole = roleRepo.findById(roleId);
+        if (optionalAppRole.isPresent()){
+            return optionalAppRole.get();
         }else {
-            throw new RoleNotFoundException("");
+            throw new EntityNotFoundException("Role not found for id :: "+roleId);
         }
-        return role;
+
+    }
+
+    @Override
+    public AppRoleDTO getRoleDTO(Long roleId)  {
+        log.info("getting role by id :: " +roleId +"...");
+        return AppRoleDTO.mapToDTO(getRole(roleId));
+
     }
 
     @Override
     public AppRole findByName(String name) {
         log.info("getting role by name :: " +name +"...");
-        return roleRepo.findByName(name).get();
+        Optional<AppRole> optionalAppRole = roleRepo.findByName(name);
+        if (optionalAppRole.isPresent()){
+            return optionalAppRole.get();
+        }else {
+            throw new EntityNotFoundException("Role not found for name :: "+name);
+        }
     }
 
     @Override
-    public AppRole updateRole(AppRole role) throws RoleNotFoundException {
-        log.info("updating role ...");
-        AppRole role1 = roleRepo.save(role);
-        return role1;
+    public AppRoleDTO findByNameDTO(String name) {
+        log.info("getting role by name :: " +name +"...");
+        return AppRoleDTO.mapToDTO(findByName(name));
     }
 
     @Override
-    public List<AppRole> listRole(int page, int size) {
+    public PageDTO<AppRoleDTO> listRole(int page, int size) {
         log.info("list role ...");
-        List<AppRole> roles = roleRepo.listRole(PageRequest.of(page, size));
-        AppRole role = roles.get(0);
-        role.setCurrentPage(page);
-        role.setPageSize(size);
-        role.setTotalPages( (roles.size() / 5) + 1 );
+        Page<AppRole> roles = roleRepo.findAllByOrderByNameAsc(PageRequest.of(page, size));
+       return PageDTO.mapToAppRolePageDTO(roles);
 
-        return roles;
     }
 
     @Override
-    public void deleteRole(Integer roleId) throws RoleNotFoundException {
+    public void deleteRole(Long roleId) {
         log.info("deleting role by id :: " +roleId +"...");
-        AppRole role = getRole(roleId);
-            roleRepo.deleteById(role.getId());
-    }
+        if (roleRepo.existsById(roleId)) {
+            roleRepo.delete(getRole(roleId));
+        }else {
+            throw new EntityNotFoundException("Role not found for id :: " +roleId);
+        }
 
-    @Override
-    public void deleteAllRole() {
-        log.info("deleting all role...");
-        roleRepo.deleteAll();
+
     }
 
 }

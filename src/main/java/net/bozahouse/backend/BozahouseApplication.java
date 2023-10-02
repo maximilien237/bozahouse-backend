@@ -1,10 +1,17 @@
 package net.bozahouse.backend;
 
+import net.bozahouse.backend.repositories.AppRoleRepo;
+import net.bozahouse.backend.repositories.AppUserRepo;
+import net.bozahouse.backend.services.AppUserService;
+import net.bozahouse.backend.utils.LoadInitialData;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import net.bozahouse.backend.utils.DateUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 
 @EnableScheduling
@@ -28,28 +35,20 @@ public class BozahouseApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BozahouseApplication.class, args);
-
-
-		//System.out.println(DateUtils.dateTimeFormatter(10));
-
-/*		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-
-		try {
-			Date date1 = sdf.parse("2022-12-17");
-			Date date2 = sdf.parse("2022-12-22");
-			long diffInMillies = Math.abs(date2.getTime() - date1.getTime());
-			long result = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-			boolean b = new Date().before(date1);
-			boolean b1 = new Date().before(date2);
-			System.out.println(result +" "+b +" "+b1);
-
-
-		} catch (ParseException parseException){
-			parseException.getStackTrace();
-		}*/
-
-
-
 	}
+
+
+/*	@Bean
+	public CommandLineRunner loadData(AppUserService appUserService, AppUserRepo appUserRepo, AppRoleRepo roleRepo, PasswordEncoder encoder){
+
+		return args -> {
+			if (appUserRepo.count() < 1) {
+				LoadInitialData.loadAdminData(appUserService, appUserRepo, roleRepo, encoder);
+			}
+		};
+	}*/
+
+
+
 
 }

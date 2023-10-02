@@ -1,22 +1,24 @@
 package net.bozahouse.backend.services;
 
-import net.bozahouse.backend.exception.entitie.RoleNotFoundException;
+
+import net.bozahouse.backend.dtos.AppRoleDTO;
+import net.bozahouse.backend.dtos.PageDTO;
 import net.bozahouse.backend.model.entities.AppRole;
 
-import java.util.List;
-
 public interface AppRoleService {
-    void createRole(AppRole role);
 
-    AppRole getRole(Integer roleId) throws RoleNotFoundException;
+
+    AppRoleDTO createOrUpdateAppRole(AppRole role);
+
+    AppRole getRole(Long roleId);
+
+    AppRoleDTO getRoleDTO(Long roleId);
 
     AppRole findByName(String name);
 
-    AppRole updateRole(AppRole role) throws RoleNotFoundException;
+    AppRoleDTO findByNameDTO(String name);
 
-    List<AppRole> listRole(int page, int size);
+    PageDTO<AppRoleDTO> listRole(int page, int size);
 
-    void deleteRole(Integer roleId) throws RoleNotFoundException;
-
-    void deleteAllRole();
+    void deleteRole(Long roleId);
 }

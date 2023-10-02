@@ -1,67 +1,39 @@
 package net.bozahouse.backend.services;
 
-import net.bozahouse.backend.exception.entitie.AppUserNotFoundException;
-import net.bozahouse.backend.exception.entitie.NewsletterNotFoundException;
-import net.bozahouse.backend.exception.entitie.RoleNotFoundException;
-import net.bozahouse.backend.model.entities.AppRole;
+
+import net.bozahouse.backend.dtos.AppUserDTO;
+import net.bozahouse.backend.dtos.PageDTO;
 import net.bozahouse.backend.model.entities.AppUser;
-import net.bozahouse.backend.model.forms.AppUserForm;
-import net.bozahouse.backend.model.views.AppUserDatesView;
-import net.bozahouse.backend.model.views.AppUserView;
-
-import java.util.List;
-
 
 public interface AppUserService {
-    AppUser getAppUser(String userId) throws AppUserNotFoundException;
-
-    AppUser getAppUserByUsername(String username) throws AppUserNotFoundException;
-
-    AppRole getRoleByRoleName(String roleName) throws RoleNotFoundException;
-
-    AppUser createAppUser(AppUser appUser) throws RoleNotFoundException, AppUserNotFoundException, NewsletterNotFoundException;
-
-    AppUserView createAppUserView(AppUser appUser) throws RoleNotFoundException, NewsletterNotFoundException, AppUserNotFoundException;
-
-    AppUser updateAppUser(AppUserForm form) throws AppUserNotFoundException;
-
-    AppUserView getAppUserView(String userId) throws AppUserNotFoundException;
-
-    AppUserView updateAppUserView(AppUserForm form) throws AppUserNotFoundException;
-
-    void deleteAppUser(String userId) throws AppUserNotFoundException;
-
-    void deleteAppUserDates(Long userId) throws AppUserNotFoundException;
-
-    List<AppUserView> listAppUserView(int page, int size);
-
-    boolean existsByUsername(String username);
-
-    List<AppUserDatesView> appUserDatesList(String appUserId, int page, int size) throws AppUserNotFoundException;
 
     boolean existsByEmail(String email);
 
-    boolean existsByPromoCode(String code);
+    boolean existsByUsername(String username);
 
-    boolean existsByReferralCode(String referral);
+    AppUser getAppUser(Long userId);
 
-    Double countAllByReferralCode(String referralCode);
+    AppUserDTO getAppUserDTO(Long userId);
 
-    List<AppUserView> listAppUserWithRoleEditor(int page, int size);
+    AppUser getAppUserByEmail(String email);
 
-    AppUserView appUserAdmin() throws AppUserNotFoundException;
+    AppUserDTO getAppUserByEmailDTO(String email);
 
-    AppUserView addRoleToUser(String username, String roleName) throws RoleNotFoundException, AppUserNotFoundException;
+    AppUserDTO updateAppUser(AppUserDTO dto);
 
-    AppUserView removeRoleToUser(String username, String roleName) throws RoleNotFoundException, AppUserNotFoundException;
+    void deleteAppUser(Long userId);
 
-    List<AppUserView> findAllByUsername(String key, int page, int size);
+    PageDTO<AppUserDTO> listAppUser(int page, int size);
 
-    List<AppUserView> listAppUserDisabledByUsername(String key, int page, int size);
+    //PageDTO<AppUserDTO> listAppUserWithRole(String roleName, int page, int size);
 
-    AppUser getAppUserByEmail(String email) throws AppUserNotFoundException;
+    AppUserDTO addRoleToUser(String email, String roleName);
 
-    void enabledAppUser(String appUserId) throws AppUserNotFoundException;
+    AppUserDTO removeRoleToUser(String email, String roleName);
 
-    void disabledAppUser(String appUserId) throws AppUserNotFoundException;
+    PageDTO<AppUserDTO> findAllByUsername(String key, int page, int size);
+
+    PageDTO<AppUserDTO> listAppUserDisabledByUsername(String key, int page, int size);
+
+    void enabledOrDisableAppUser(Long appUserId);
 }

@@ -1,38 +1,59 @@
 package net.bozahouse.backend.security;
 
-public interface ControllerVariables {
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-    String[] devAntPatterns = new String[]{
-            "/swagger-ui/**",
-            "/api-docs/**",
+@Getter
+@NoArgsConstructor
+public class ControllerVariables {
+
+    private String admin = "ADMIN";
+    private String user = "USER";
+    private String editor = "EDITOR";
+    private static final String PATH_AUTH =   "/api/auth/v1/**";
+    private static final String PATH_USER = "/user/v1/**";
+    private static final String PATH_EDITOR = "/editor/v1/**";
+    private static final String PATH_ADMIN = "/admin/v1/**";
+
+    private String[] devAntPatterns = new String[]{
+            "/v2/api-docs"
+            ,"/v3/api-docs"
+            ,"/v3/api-docs/**"
+            ,"/swagger-resources"
+            ,"/swagger-resources/**"
+            ,"/configuration/ui"
+            ,"/configuration/security"
+            ,"/swagger-ui/**"
+            ,"/webjars/**"
+            ,"/swagger-ui.html",
             "/h2-console/**"
     };
 
-    String[] publicAntPatterns = new String[]{
-            "/api/auth/v1/**"
+    private String[] publicAntPatterns = new String[]{
+            PATH_AUTH
+
     };
 
-    String[] userAntPatterns = new String[]{
-            "/user/v1/**"
-    };
-
-
-    String[] editorAntPatterns = new String[]{
-            "/user/v1/**",
-            "/editor/v1/**"
+    private String[] userAntPatterns = new String[]{
+            PATH_USER
     };
 
 
-    String[] adminAntPatterns = new String[]{
-            "/user/v1/**",
-            "/editor/v1/**",
-            "/admin/v1/**"
+    private String[] editorAntPatterns = new String[]{
+            PATH_USER,
+            PATH_EDITOR
     };
 
 
-    String ADMIN_ROLE_NAME = "ADMIN";
-    String USER_ROLE_NAME = "USER";
-    String EDITOR_ROLE_NAME = "EDITOR";
+    private String[] adminAntPatterns = new String[]{
+            PATH_USER,
+            PATH_EDITOR,
+            PATH_ADMIN
+    };
 
-    //String ROLE_PREFIX = "ROLE_";
+
+
+
+
+
 }

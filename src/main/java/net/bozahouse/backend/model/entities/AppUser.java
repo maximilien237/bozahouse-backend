@@ -1,21 +1,24 @@
 package net.bozahouse.backend.model.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
-import javax.persistence.*;
+
 import java.util.Date;
-import java.util.HashSet;
+
+import java.util.List;
 import java.util.Set;
 
 
 @Entity
-@Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "users")
-public class AppUser {
-    @Id
-    private String id;
+public class AppUser extends AbstractEntity{
+
     private String account;
     private String howKnowUs;
     private String lastname;
@@ -28,39 +31,17 @@ public class AppUser {
 
     private Date birthday;
     private String email;
-    private String referralCode;
-
-    private String promoCode;
-    private Date discountDate;
-    private Date createdAt;
-    private Date updatedAt;
-    private boolean isActivated;
+    private boolean activated;
     private boolean firstConnexion;
-    private boolean activatedHostSubscription;
-    private boolean activatedNormalSubscription;
     private boolean acceptTerms;
-    private long hostSubscriptionCounter;
-    private long normalSubscriptionCounter;
     private long countConnexion;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.REFRESH)
     @JoinTable(name = "users_roles",
     joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<AppRole> roles = new HashSet<>();
+    private List<AppRole> roles;
 
-    public AppUser(){
-        super();
-        this.isActivated = false;
-        this.firstConnexion=false;
-        this.activatedHostSubscription=false;
-        this.activatedNormalSubscription=false;
-        this.acceptTerms=false;
-        this.countConnexion=0;
-        this.hostSubscriptionCounter=0;
-        this.normalSubscriptionCounter=0;
-
-    }
 
 
 }

@@ -1,22 +1,20 @@
 package net.bozahouse.backend.model.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 
 @Entity
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "talents")
-public class Talent {
-    @Id
-    private String id;
+public class Talent extends AbstractEntity{
+
     private String type;
     private String title;
     private String domain;
@@ -33,8 +31,6 @@ public class Talent {
     private String address;
     private String workMode;
     private String reference;
-    private Date publishedAt;
-    private Date updatedAt;
 
     private String email;
     private String contract;
@@ -45,5 +41,6 @@ public class Talent {
 
     @NotNull
     @ManyToOne
+    @JoinColumn(name = "id_user")
     private AppUser user;
 }

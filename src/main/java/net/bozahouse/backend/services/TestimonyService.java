@@ -1,34 +1,21 @@
 package net.bozahouse.backend.services;
 
-import net.bozahouse.backend.exception.entitie.AppUserNotFoundException;
-import net.bozahouse.backend.exception.entitie.TestimonyNotFoundException;
 
-
+import net.bozahouse.backend.dtos.PageDTO;
+import net.bozahouse.backend.dtos.TestimonyDTO;
 import net.bozahouse.backend.model.entities.Testimony;
 
-import net.bozahouse.backend.model.forms.TestimonyForm;
-
-import net.bozahouse.backend.model.views.TestimonyView;
-
-import java.text.ParseException;
-import java.util.List;
-
 public interface TestimonyService {
-    Testimony getTestimony(Long id) throws TestimonyNotFoundException;
 
-    TestimonyView getTestimonyView(Long id) throws TestimonyNotFoundException;
+    Testimony getTestimony(Long id);
 
-    Testimony createTestimony(Testimony testimony);
+    TestimonyDTO getTestimonyDTO(Long id);
 
-    TestimonyView createTestimonyView(Testimony testimony);
+    TestimonyDTO createTestimonyDTO(TestimonyDTO testimonyDTO, Long userId);
 
-    Testimony updateTestimony(TestimonyForm form) throws TestimonyNotFoundException, ParseException;
+    TestimonyDTO updateTestimonyDTO(TestimonyDTO testimonyDTO);
 
-    TestimonyView updateTestimonyView(TestimonyForm form) throws TestimonyNotFoundException, ParseException;
+    void deleteTestimony(Long id);
 
-    void deleteTestimony(Long id) throws TestimonyNotFoundException;
-
-    List<TestimonyView> listTestimonyViewPageable(int page, int size);
-
-    List<TestimonyView> listTestimonyByUserView(String appUserId, int page, int size) throws AppUserNotFoundException;
+    PageDTO<TestimonyDTO> listTestimonyDTO(int page, int size);
 }

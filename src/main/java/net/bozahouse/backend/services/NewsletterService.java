@@ -1,27 +1,21 @@
 package net.bozahouse.backend.services;
 
-import net.bozahouse.backend.exception.entitie.NewsletterNotFoundException;
-import net.bozahouse.backend.model.entities.Newsletter;
-import net.bozahouse.backend.model.forms.NewsletterForm;
-import net.bozahouse.backend.model.views.NewsletterView;
 
-import java.text.ParseException;
-import java.util.List;
+import net.bozahouse.backend.dtos.NewsletterDTO;
+import net.bozahouse.backend.dtos.PageDTO;
+import net.bozahouse.backend.model.entities.Newsletter;
 
 public interface NewsletterService {
-    Newsletter getNews(Long id) throws NewsletterNotFoundException;
 
-    NewsletterView getNewsView(Long id) throws NewsletterNotFoundException;
+    Newsletter getNews(Long id);
 
-    Newsletter createNews(Newsletter newsletter);
+    NewsletterDTO getNewsDTO(Long id);
 
-    NewsletterView createNewsView(Newsletter newsletter);
+    NewsletterDTO createNews(NewsletterDTO newsletterDTO, Long userId);
 
-    Newsletter updateNews(NewsletterForm form) throws NewsletterNotFoundException, ParseException;
+    NewsletterDTO updateNews(NewsletterDTO newsletterDTO);
 
-    NewsletterView updateNewsView(NewsletterForm form) throws NewsletterNotFoundException, ParseException;
+    void deleteNews(Long id);
 
-    void deleteNews(Long id) throws NewsletterNotFoundException;
-
-    List<NewsletterView> listNewsViewPageable(int page, int size);
+    PageDTO<NewsletterDTO> listNews(int page, int size);
 }
